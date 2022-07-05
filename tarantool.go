@@ -1,7 +1,6 @@
 package tarantool
 
 import (
-	"fmt"
 	"github.com/tarantool/go-tarantool"
 	"go.k6.io/k6/js/modules"
 )
@@ -19,9 +18,9 @@ func (Tarantool) Connect(addr string, opts tarantool.Opts, keyFile string, certF
 		addr = "localhost:3301"
 	}
 
-	fmt.Println("OPTS NOW: ", opts)
-	fmt.Println("OPTS SSL: ", keyFile, certFile, caFile)
-	opts.Ssl = tarantool.SslOpts{KeyFile: keyFile, CertFile: certFile, CaFile: caFile}
+	if opts.Transport == "ssl"{
+		opts.Ssl = tarantool.SslOpts{KeyFile: keyFile, CertFile: certFile, CaFile: caFile}
+	}
 	conn, err := tarantool.Connect(addr, opts)
 	if err != nil {
 		return nil, err
