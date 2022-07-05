@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/tarantool/go-tarantool"
 	"go.k6.io/k6/js/modules"
+	"log"
+	"runtime/debug"
 )
 
 func init() {
@@ -15,6 +17,14 @@ type Tarantool struct{}
 
 // Connect creates a new Tarantool connection
 func (Tarantool) Connect(addr string, opts tarantool.Opts) (*tarantool.Connection, error) {
+	bi, ok := debug.ReadBuildInfo()
+	if !ok {
+		log.Printf("Failed to read build info")
+	}
+	for _, dep := range bi.Deps {
+		fmt.Printf("Dep: %+v\n", dep)
+	}
+
 	if addr == "" {
 		addr = "localhost:3301"
 	}
