@@ -19,6 +19,10 @@ func (Tarantool) Connect(addr string, opts tarantool.Opts) (*tarantool.Connectio
 		addr = "localhost:3301"
 	}
 	fmt.Println("OPTS: ", opts)
+	if opts.Transport == "" {
+		opts.Transport = "ssl"
+	}
+	fmt.Println("OPTS: ", opts)
 	conn, err := tarantool.Connect(addr, opts)
 	if err != nil {
 		return nil, err
