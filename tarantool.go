@@ -14,14 +14,14 @@ func init() {
 type Tarantool struct{}
 
 // Connect creates a new Tarantool connection
-func (Tarantool) Connect(addr string, opts tarantool.Opts, sslOpts tarantool.SslOpts) (*tarantool.Connection, error) {
+func (Tarantool) Connect(addr string, opts tarantool.Opts, keyFile string, certFile string, caFile string) (*tarantool.Connection, error) {
 	if addr == "" {
 		addr = "localhost:3301"
 	}
 
 	fmt.Println("OPTS NOW: ", opts)
-	fmt.Println("OPTS SSL: ", sslOpts)
-	opts.Ssl = sslOpts
+	fmt.Println("OPTS SSL: ", keyFile, certFile, caFile)
+	opts.Ssl = tarantool.SslOpts{KeyFile: keyFile, CertFile: certFile, CaFile: caFile}
 	conn, err := tarantool.Connect(addr, opts)
 	if err != nil {
 		return nil, err
